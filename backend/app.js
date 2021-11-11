@@ -4,19 +4,25 @@ require('dotenv/config')
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
-
+const authJwt = require('./helper/jwt');
+const errorHandler = require('./helper/error-handler')
 app.use(cors());
 app.options('*', cors())
-
-//middleware
-app.use(express.json());
-app.use(morgan('tiny'));
 
 
 
 // Middleware
 app.use(express.json());
 app.use(morgan('tiny'));
+app.use(authJwt());
+app.use(errorHandler);
+// app.use((err,req,res,next) => {
+
+//     if (err) {
+//         res.status(500).json({message: err});
+//     }
+
+// })
 
 // Routers
 const productsRouter = require('./routers/products')
